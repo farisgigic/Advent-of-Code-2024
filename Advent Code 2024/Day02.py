@@ -1149,11 +1149,98 @@ data2 = [
     [8, 7, 4, 3, 2],
     [39, 37, 34, 31, 28]]
 
+data_example1 = [
+    [7, 6, 4, 2, 1],
+    [1, 2, 7, 8, 9],
+    [9, 7, 6, 2, 1],
+    [1, 3, 2, 4, 5],
+    [8, 6, 4, 4, 1],
+    [1, 3, 6, 7, 9]]
+
+#Task01
+def is_safe_report(report):
+    increasing = True
+    decreasing = True
+
+    for i in range(len(report) - 1):
+        difference = report[i + 1] - report[i]
+        if not (1 <= abs(difference) <= 3):
+            return False
+        if difference > 0:
+            decreasing = False
+        elif difference < 0:
+            increasing = False
+
+    return increasing or decreasing
 
 
+def count_safe_reports(reports):
+    safe_count = 0
+    for report in reports:
+        if is_safe_report(report):
+            safe_count += 1
+    return safe_count
+
+print(count_safe_reports(data2))
 
 
+def is_safe(report):
+    """
+    Check if a report is safe without any modifications.
+    A report is safe if it is either strictly increasing or strictly decreasing,
+    and adjacent levels differ by at least 1 and at most 3.
+    """
+    diffs = [report[i + 1] - report[i] for i in range(len(report) - 1)]
 
+    # Check if all differences are in the range [-3, -1] (strictly decreasing)
+    if all(-3 <= diff <= -1 for diff in diffs):
+        return True
+
+    # Check if all differences are in the range [1, 3] (strictly increasing)
+    if all(1 <= diff <= 3 for diff in diffs):
+        return True
+
+    return False
+
+
+def can_be_safe_with_removal(report):
+    """
+    Check if a report can be made safe by removing one level.
+    """
+    for i in range(len(report)):
+        # Create a new report without the i-th level
+        modified_report = report[:i] + report[i + 1:]
+        if is_safe(modified_report):
+            return True
+    return False
+
+
+def count_safe_reports_with_dampener(reports):
+    """
+    Count the number of safe reports with the Problem Dampener.
+    """
+    safe_count = 0
+
+    for report in reports:
+        if is_safe(report) or can_be_safe_with_removal(report):
+            safe_count += 1
+
+    return safe_count
+
+
+# Provided data
+data_example2 = [
+    [7, 6, 4, 2, 1],
+    [1, 2, 7, 8, 9],
+    [9, 7, 6, 2, 1],
+    [1, 3, 2, 4, 5],
+    [8, 6, 4, 4, 1],
+    [1, 3, 6, 7, 9]
+]
+
+# Count safe reports with the Problem Dampener
+safe_reports_count = count_safe_reports_with_dampener(data2)
+print(f"Number of safe reports with the Problem Dampener: {safe_reports_count}")
 
 
 
