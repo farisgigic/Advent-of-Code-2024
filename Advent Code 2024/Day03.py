@@ -3,7 +3,6 @@ import re
 # Define the relative path to your file
 file_path = 'Lists/data3.txt'
 
-# Open the file and read its contents
 with open(file_path, 'r') as file:
     text = file.read()
 
